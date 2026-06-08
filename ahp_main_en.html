@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AHP – Main Criteria</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#f7f6f3;color:#1a1a18;min-height:100vh;padding:2rem 1rem}
+h1{font-size:1.35rem;font-weight:600;letter-spacing:-0.02em;margin-bottom:0.25rem}
+.subtitle{font-size:0.8rem;color:#6b6b67;margin-bottom:1.5rem}
+.card{background:#fff;border:0.5px solid #e0dfd7;border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1rem}
+label{font-size:0.8rem;color:#6b6b67;display:block;margin-bottom:0.25rem}
+input[type=text]{width:100%;border:0.5px solid #d4d3cb;border-radius:8px;padding:0.45rem 0.75rem;font-size:0.875rem;font-family:inherit;background:#fff;color:#1a1a18;outline:none}
+input[type=text]:focus{border-color:#888}
+.saaty-ref{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:6px}
+.saaty-item{background:#f7f6f3;border-radius:6px;padding:6px 8px;font-size:0.72rem}
+.saaty-item strong{display:block;font-size:0.85rem;color:#1a1a18;margin-bottom:1px}
+.cr-box{border-radius:8px;padding:0.75rem 1rem;font-size:0.82rem;margin-top:0.75rem}
+.cr-ok{background:#eaf3de;color:#3b6d11;border:0.5px solid #c0dd97}
+.cr-neutral{background:#f7f6f3;color:#6b6b67;border:0.5px solid #e0dfd7}
+.btn{display:inline-flex;align-items:center;gap:6px;border:0.5px solid #d4d3cb;border-radius:8px;padding:0.5rem 1rem;font-size:0.82rem;font-family:inherit;background:#fff;color:#1a1a18;cursor:pointer;transition:background 0.15s}
+.btn:hover{background:#f7f6f3}
+.btn-primary{background:#1a1a18;color:#fff;border-color:#1a1a18}
+.btn-primary:hover{background:#333}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:1rem}
+.export-area{background:#f7f6f3;border:0.5px solid #e0dfd7;border-radius:8px;padding:1rem;font-family:'DM Mono',monospace;font-size:0.72rem;white-space:pre;overflow-x:auto;margin-top:0.75rem;line-height:1.6}
+.section-title{font-size:0.85rem;font-weight:600;margin-bottom:0.75rem;color:#1a1a18}
+.step-num{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#1a1a18;color:#fff;border-radius:50%;font-size:0.7rem;font-weight:600;margin-right:6px;flex-shrink:0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.instructions{background:#e8f0fb;border:0.5px solid #b5d4f4;border-radius:10px;padding:1rem 1.25rem;margin-bottom:1rem}
+.instructions h2{font-size:0.85rem;font-weight:600;color:#185fa5;margin-bottom:0.6rem}
+.instructions ol{padding-left:1.25rem}
+.instructions li{font-size:0.82rem;color:#1a1a18;margin-bottom:0.35rem;line-height:1.55}
+.instructions a{color:#185fa5}
+.lang-btn{font-size:0.75rem;background:#f0efeb;border:0.5px solid #e0dfd7;border-radius:20px;padding:3px 12px;color:#6b6b67;cursor:pointer;font-family:inherit;text-decoration:none;transition:background 0.15s}
+.lang-btn:hover{background:#e0dfd7}
+.topbar{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:0.15rem;flex-wrap:wrap;gap:8px}
+.badge{font-size:0.75rem;background:#f0efeb;border:0.5px solid #e0dfd7;border-radius:20px;padding:2px 10px;color:#6b6b67}
+.crit-box{background:#f7f6f3;border:0.5px solid #e0dfd7;border-radius:10px;padding:1rem 1.25rem;flex:1;min-width:160px}
+.crit-box strong{display:block;font-size:1rem;font-weight:600;margin-bottom:4px}
+.crit-box span{font-size:0.75rem;color:#6b6b67}
+.crit-box .def{font-size:0.75rem;color:#888;margin-top:6px;line-height:1.5}
+.result-row{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:0.75rem}
+.result-item{text-align:center}
+.result-item .val{font-size:1.5rem;font-weight:600;font-family:'DM Mono',monospace}
+.result-item .lbl{font-size:0.72rem;color:#6b6b67;margin-top:2px}
+select{border:0.5px solid #d4d3cb;border-radius:6px;padding:0.4rem 0.6rem;font-size:0.875rem;font-family:inherit;background:#fff;color:#1a1a18;cursor:pointer;outline:none}
+select:focus{border-color:#888}
+@media(max-width:600px){.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div style="max-width:820px;margin:0 auto">
+
+<div class="topbar">
+  <div style="display:flex;align-items:baseline;gap:10px">
+    <h1>Logistiscore AHP</h1>
+    <span class="badge">Main Criteria</span>
+  </div>
+  <a href="ahp_main_fr.html" class="lang-btn">Français</a>
+</div>
+<p class="subtitle">2 criteria · 1 comparison · Saaty 1–9</p>
+
+<div class="instructions">
+  <h2>ℹ How to use this form</h2>
+  <ol><li>Fill in your name and today's date.</li><li>Read the Saaty scale reference before starting.</li><li>For each pair, select which criterion is more important for urban last-mile deliverability, then choose the intensity (1–9).</li><li>The Consistency Ratio (CR) is calculated automatically. If CR > 0.10, highlighted rows indicate the most inconsistent judgements — please revise them.</li><li>When finished, click <strong>Copy export data</strong> and send the copied text by email to <a href="mailto:yvonne.badulescu@hesge.ch">yvonne.badulescu@hesge.ch</a>.</li></ol>
+</div>
+
+<div class="card">
+  <p class="section-title"><span class="step-num">1</span>Expert identification</p>
+  <div class="grid2">
+    <div><label>Expert name</label><input type="text" id="expert-name" placeholder="e.g. Dr. Dupont"></div>
+    <div><label>Date</label><input type="text" id="expert-date"></div>
+  </div>
+</div>
+
+<div class="card">
+  <p class="section-title"><span class="step-num">2</span>Saaty scale reference</p>
+  <div class="saaty-ref"><div class="saaty-item"><strong>1</strong>Equal importance</div>
+<div class="saaty-item"><strong>2</strong>Weak</div>
+<div class="saaty-item"><strong>3</strong>Moderate importance</div>
+<div class="saaty-item"><strong>4</strong>Moderate plus</div>
+<div class="saaty-item"><strong>5</strong>Strong importance</div>
+<div class="saaty-item"><strong>6</strong>Strong plus</div>
+<div class="saaty-item"><strong>7</strong>Very strong</div>
+<div class="saaty-item"><strong>8</strong>Very, very strong</div>
+<div class="saaty-item"><strong>9</strong>Extreme importance</div></div>
+</div>
+
+<div class="card">
+  <p class="section-title"><span class="step-num">3</span>Comparison: Traffic vs Accessibility</p>
+  <p style="font-size:0.78rem;color:#6b6b67;margin-bottom:1.25rem"><em>With respect to the goal of measuring road segment deliverability, which pillar is more important, and by how much?</em></p>
+
+  <div style="display:flex;gap:1rem;align-items:stretch;flex-wrap:wrap;margin-bottom:1.25rem">
+    <div class="crit-box">
+      <strong>Traffic</strong>
+      <span>Congestion, speed, roadworks, lanes, intersections, PT stops</span>
+      <div class="def">Congestion levels, roadworks, average speed, number of lanes, intersection type, public transport stop presence.</div>
+    </div>
+    <div style="display:flex;align-items:center;font-size:1.25rem;color:#aaa">⟷</div>
+    <div class="crit-box">
+      <strong>Accessibility</strong>
+      <span>Obstacles, vehicle size, parking, slope, time restrictions</span>
+      <div class="def">Road obstacles, vehicle size restrictions, delivery parking availability, road slope, time access restrictions.</div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:1rem">
+    <label>Which is more important for deliverability?</label>
+    <select id="dir" onchange="onDirChange()" style="margin-top:4px;width:100%;max-width:360px">
+      <option value="">— select —</option><option value="eq">Equal importance</option><option value="traffic">Traffic is more important</option><option value="access">Accessibility is more important</option>
+    </select>
+  </div>
+
+  <div id="scale-row">
+    <label>Intensity on the Saaty scale</label>
+    <select id="scale" onchange="compute()" disabled style="margin-top:4px;width:100%;max-width:360px">
+      <option value="1">1 – Equal importance</option><option value="2">2 – Weak</option><option value="3">3 – Moderate importance</option><option value="4">4 – Moderate plus</option><option value="5">5 – Strong importance</option><option value="6">6 – Strong plus</option><option value="7">7 – Very strong</option><option value="8">8 – Very, very strong</option><option value="9">9 – Extreme importance</option>
+    </select>
+  </div>
+
+  <div id="cr-display" class="cr-box cr-neutral">Make a selection above to compute weights.</div>
+</div>
+
+<div class="card">
+  <p class="section-title"><span class="step-num">4</span>Derived weights</p>
+  <div id="weights-display" class="result-row"></div>
+  <div id="export-display" class="export-area">Complete the comparisons above to generate the export data.</div>
+  <div class="btn-row">
+    <button class="btn" id="copy-btn" onclick="copyExport()">📋 Copy export data</button>
+    <button class="btn btn-primary" onclick="resetForm()">↺ Reset</button>
+  </div>
+</div>
+
+</div>
+<script>
+document.getElementById('expert-date').value = new Date().toISOString().slice(0,10);
+
+function onDirChange(){
+  const dir=document.getElementById('dir').value;
+  const s=document.getElementById('scale');
+  if(dir===''||dir==='eq'){s.disabled=true;s.value='';}
+  else{s.disabled=false;if(!s.value)s.value='1';}
+  compute();
+}
+
+function compute(){
+  const dir=document.getElementById('dir').value;
+  const scaleVal=parseInt(document.getElementById('scale').value)||1;
+  const crDiv=document.getElementById('cr-display');
+  if(!dir){
+    crDiv.className='cr-box cr-neutral';crDiv.textContent='Make a selection above to compute weights.';
+    document.getElementById('weights-display').innerHTML='';
+    document.getElementById('export-display').textContent='Complete the comparisons above to generate the export data.';
+    return;
+  }
+  let aT=1,aA=1;
+  if(dir==='traffic') aT=scaleVal;
+  else if(dir==='access') aA=scaleVal;
+  const sum=aT+aA, wT=aT/sum, wA=aA/sum;
+  crDiv.className='cr-box cr-ok';crDiv.textContent='✓ With 2 criteria, consistency is always perfect (CR = 0).';
+  document.getElementById('weights-display').innerHTML=`
+    <div class="result-item"><div class="val">${(wT*100).toFixed(1)}%</div><div class="lbl">Traffic weight</div></div>
+    <div class="result-item"><div class="val">${(wA*100).toFixed(1)}%</div><div class="lbl">Accessibility weight</div></div>
+    <div class="result-item"><div class="val">${dir==='eq'?'1':dir==='traffic'?scaleVal:'1/'+scaleVal}</div><div class="lbl">Ratio a₁₂</div></div>`;
+  const name=document.getElementById('expert-name').value||'Expert';
+  const date=document.getElementById('expert-date').value;
+  const dirLabel=dir==='eq'?'Equal':(dir==='traffic'?'Traffic stronger ('+scaleVal+')':'Accessibility stronger ('+scaleVal+')');
+  const lines=[
+    'AHP Main Criteria | Expert: '+name+' | Date: '+date,
+    'CR = 0.0000 (2 criteria — always consistent)',
+    '',
+    '--- PAIRWISE MATRIX ---',
+    '               Traffic  Accessibility',
+    'Traffic        '+String(aT).padStart(7)+'  '+String(1/aT).padStart(7),
+    'Accessibility '+String(aA).padStart(7)+'  '+String(1/aA).padStart(7),
+    '',
+    '--- WEIGHTS ---',
+    'Traffic        '+wT.toFixed(6),
+    'Accessibility '+wA.toFixed(6),
+    '',
+    '--- RAW INPUT ---',
+    'Judgment: '+dirLabel,
+  ];
+  document.getElementById('export-display').textContent=lines.join('\n');
+}
+
+function copyExport(){
+  navigator.clipboard.writeText(document.getElementById('export-display').textContent).then(()=>{
+    const btn=document.getElementById('copy-btn');
+    btn.textContent='✓ Copied!';
+    setTimeout(()=>btn.textContent='📋 Copy export data',1800);
+  });
+}
+function resetForm(){
+  if(!confirm('Reset all inputs?')) return;
+  document.getElementById('expert-name').value='';
+  document.getElementById('expert-date').value=new Date().toISOString().slice(0,10);
+  document.getElementById('dir').value='';
+  const s=document.getElementById('scale');s.disabled=true;s.value='';
+  document.getElementById('cr-display').className='cr-box cr-neutral';
+  document.getElementById('cr-display').textContent='Make a selection above to compute weights.';
+  document.getElementById('weights-display').innerHTML='';
+  document.getElementById('export-display').textContent='Complete the comparisons above to generate the export data.';
+}
+</script>
+</body>
+</html>
