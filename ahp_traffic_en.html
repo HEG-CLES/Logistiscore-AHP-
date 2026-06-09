@@ -572,6 +572,7 @@ select:focus{border-color:#888}
   <div id="weights-display" class="weight-grid"></div>
   <div id="export-display" class="export-area">Complete the comparisons above to generate the export data.</div>
   <div class="btn-row">
+    <button class="btn btn-primary" id="submit-btn" onclick="submitToSheets()">📤 Submit to Google Sheets</button>
     <button class="btn" id="copy-btn" onclick="copyExport()">📋 Copy export data</button>
     <button class="btn btn-primary" onclick="resetForm()">↺ Reset</button>
   </div>
@@ -585,6 +586,7 @@ const N = 6;
 const RI = [0,0,0,0.58,0.9,1.12,1.24,1.32,1.41,1.45,1.49];
 const PAIRS = [];
 for(let i=0;i<N;i++) for(let j=i+1;j<N;j++) PAIRS.push([i,j]);
+const FORM_TYPE = 'traffic';
 
 document.getElementById('expert-date').value = new Date().toISOString().slice(0,10);
 
@@ -762,6 +764,63 @@ function resetForm(){
   document.getElementById('weights-display').innerHTML='';
   document.getElementById('export-display').textContent='Complete the comparisons above to generate the export data.';
 }
+
+function submitToSheets() {
+  const name = document.getElementById('expert-name').value.trim();
+  if(!name) { alert('Please enter your name before submitting.'); return; }
+  const {m, allFilled} = getMatrix();
+  if(!allFilled) { alert('Please complete all comparisons before submitting.'); return; }
+  const w = eigenvector(m);
+  const {cr} = computeCR(m, w);
+
+  // Build directions and scales objects
+  const directions = {};
+  const scales = {};
+  PAIRS.forEach(([i,j], idx) => {
+    const key = 'C'+(i+1)+'vC'+(j+1);
+    const dir = document.getElementById('dir-'+idx).value;
+    const sc = document.getElementById('scale-'+idx).value;
+    directions[key] = dir==='a'?'A':dir==='b'?'B':'equal';
+    scales[key] = dir==='eq'?1:parseInt(sc);
+  });
+
+  const payload = {
+    type: FORM_TYPE,
+    name: name,
+    date: document.getElementById('expert-date').value,
+    directions: directions,
+    scales: scales,
+    cr: parseFloat(cr.toFixed(6)),
+    weights: w.map(v => parseFloat(v.toFixed(6)))
+  };
+
+  const btn = document.getElementById('submit-btn');
+  btn.textContent = '⏳ Submitting...';
+  btn.disabled = true;
+
+  fetch('https://script.google.com/macros/s/AKfycbxR1wp-RAxvfuYq6TrQ9qJ_UKxnuGSY-ddhrSElzgRXPAPgVIp1zu1RqEfjIKXpJA/exec', {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(payload)
+  })
+  .then(() => {
+    btn.textContent = '✓ Submitted!';
+    btn.style.background = '#3b6d11';
+    btn.style.borderColor = '#3b6d11';
+    setTimeout(() => {
+      btn.textContent = '📤 Submit to Google Sheets';
+      btn.style.background = '';
+      btn.style.borderColor = '';
+      btn.disabled = false;
+    }, 3000);
+  })
+  .catch(() => {
+    btn.textContent = '✗ Error — try again';
+    btn.disabled = false;
+  });
+}
+
 </script>
 </body>
 </html>

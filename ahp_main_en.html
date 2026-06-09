@@ -129,6 +129,7 @@ select:focus{border-color:#888}
   <div id="weights-display" class="result-row"></div>
   <div id="export-display" class="export-area">Complete the comparisons above to generate the export data.</div>
   <div class="btn-row">
+    <button class="btn btn-primary" id="submit-btn" onclick="submitToSheets()">📤 Submit to Google Sheets</button>
     <button class="btn" id="copy-btn" onclick="copyExport()">📋 Copy export data</button>
     <button class="btn btn-primary" onclick="resetForm()">↺ Reset</button>
   </div>
@@ -205,6 +206,57 @@ function resetForm(){
   document.getElementById('weights-display').innerHTML='';
   document.getElementById('export-display').textContent='Complete the comparisons above to generate the export data.';
 }
+
+function submitToSheets() {
+  const name = document.getElementById('expert-name').value.trim();
+  if(!name) { alert('Please enter your name before submitting.'); return; }
+  const dir = document.getElementById('dir').value;
+  if(!dir) { alert('Please make a selection before submitting.'); return; }
+  const scaleVal = parseInt(document.getElementById('scale').value)||1;
+  let aT=1, aA=1;
+  if(dir==='traffic') aT=scaleVal;
+  else if(dir==='access') aA=scaleVal;
+  const sum=aT+aA, wT=aT/sum, wA=aA/sum;
+
+  const dirLabel = dir==='eq'?'equal':dir==='traffic'?'A':'B';
+
+  const payload = {
+    type: 'main',
+    name: name,
+    date: document.getElementById('expert-date').value,
+    direction: dirLabel,
+    scale: dir==='eq'?1:scaleVal,
+    weightTraffic: parseFloat(wT.toFixed(6)),
+    weightAccessibility: parseFloat(wA.toFixed(6))
+  };
+
+  const btn = document.getElementById('submit-btn');
+  btn.textContent = '⏳ Submitting...';
+  btn.disabled = true;
+
+  fetch('https://script.google.com/macros/s/AKfycbxR1wp-RAxvfuYq6TrQ9qJ_UKxnuGSY-ddhrSElzgRXPAPgVIp1zu1RqEfjIKXpJA/exec', {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(payload)
+  })
+  .then(() => {
+    btn.textContent = '✓ Submitted!';
+    btn.style.background = '#3b6d11';
+    btn.style.borderColor = '#3b6d11';
+    setTimeout(() => {
+      btn.textContent = '📤 Submit to Google Sheets';
+      btn.style.background = '';
+      btn.style.borderColor = '';
+      btn.disabled = false;
+    }, 3000);
+  })
+  .catch(() => {
+    btn.textContent = '✗ Error — try again';
+    btn.disabled = false;
+  });
+}
+
 </script>
 </body>
 </html>
