@@ -617,23 +617,48 @@ function getMatrix(){
 }
 
 function eigenvector(m){
-  let w=Array(N).fill(1/N);
-  for(let iter=0;iter<200;iter++){
-    const next=m.map(row=>row.reduce((s,v,j)=>s+v*w[j],0));
-    const sum=next.reduce((a,b)=>a+b,0);
-    const norm=next.map(v=>v/sum);
-    if(norm.every((v,i)=>Math.abs(v-w[i])<1e-10)){w=norm;break;}
-    w=norm;
-  }
-  return w;
+  // Exact Goepel RGGM with error correction (O-column weights)
+  // Step 1: build 10x10 padded matrix
+  const M10=Array.from({length:10},(_,i)=>Array.from({length:10},(_,j)=>i===j?1:0));
+  for(let i=0;i<N;i++) for(let j=0;j<N;j++) M10[i][j]=m[i][j];
+  // Step 2: RGMM - row log sums over all 10 cols, divide by n
+  const lnM=M10.map(row=>row.map(v=>v>0?Math.log(v):0));
+  const rowLogSums=lnM.map(row=>row.reduce((s,v)=>s+v,0));
+  const Mvals=rowLogSums.map(s=>Math.exp(s/N));
+  // M101 = sum - (10-n)
+  const M101=Mvals.reduce((s,v)=>s+v,0)-(10-N);
+  // N weights (RGMM normalised, first N only)
+  const Nvals=Mvals.map((v,i)=>i<N?v/M101:0);
+  const wRGMM=Nvals.slice(0,N);
+  // Step 3: error estimates P_i = SQRT(SUM_j[LN(a_ij*w_j/w_i)^2]/(n-1))
+  const Pvals=wRGMM.map((wi,i)=>{
+    let sqSum=0;
+    for(let j=0;j<N;j++){
+      if(i!==j) sqSum+=Math.pow(Math.log(m[i][j]*wRGMM[j]/wi),2);
+    }
+    return Math.sqrt(sqSum/(N-1));
+  });
+  // Step 4: O weights = RGMM * COSH(P), normalised
+  const Oraw=wRGMM.map((w,i)=>w*Math.cosh(Pvals[i]));
+  const Osum=Oraw.reduce((s,v)=>s+v,0);
+  return Oraw.map(v=>v/Osum);
 }
 
 function computeCR(m,w){
-  const Aw=m.map(row=>row.reduce((s,v,j)=>s+v*w[j],0));
-  const lambdaMax=Aw.reduce((s,v,i)=>s+v/w[i],0)/N;
-  const CI=(lambdaMax-N)/(N-1);
-  const cr=CI/(RI[N]||1.49);
-  return{cr,ci:CI,lambdaMax};
+  // Exact Goepel lambda_max: dot(col_sums_10x10, N-weights_padded)
+  // Note: CR uses N-weights (RGMM), not O-weights (RGGM)
+  const M10=Array.from({length:10},(_,i)=>Array.from({length:10},(_,j)=>i===j?1:0));
+  for(let i=0;i<N;i++) for(let j=0;j<N;j++) M10[i][j]=m[i][j];
+  // Recompute N-weights for CR
+  const lnM=M10.map(row=>row.map(v=>v>0?Math.log(v):0));
+  const rowLogSums=lnM.map(row=>row.reduce((s,v)=>s+v,0));
+  const Mvals=rowLogSums.map(s=>Math.exp(s/N));
+  const M101=Mvals.reduce((s,v)=>s+v,0)-(10-N);
+  const Nvals=Mvals.map((v,i)=>i<N?v/M101:0);
+  const colSums=Array.from({length:10},(_,j)=>M10.reduce((s,row)=>s+row[j],0));
+  const lambdaMax=colSums.reduce((s,v,i)=>s+v*Nvals[i],0);
+  const cr=(lambdaMax-N)/((2.7699*N-4.3513)-N);
+  return{cr,ci:(lambdaMax-N)/(N-1),lambdaMax};
 }
 
 function computeInconsistency(m,w){
