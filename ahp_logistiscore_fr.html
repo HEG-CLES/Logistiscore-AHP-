@@ -70,6 +70,9 @@ select:focus{border-color:#888}
 .progress-pip.done{background:#3b6d11}
 .progress-pip.active{background:#185fa5}
 @media(max-width:600px){.grid2{grid-template-columns:1fr}.pair-def{max-width:120px}}
+
+.urban-def{background:#f0efeb;border-left:3px solid #1a1a18;border-radius:0 8px 8px 0;padding:0.6rem 1rem;font-size:0.8rem;color:#1a1a18;margin-bottom:1.25rem;line-height:1.5}
+.urban-def strong{font-weight:600}
 </style>
 </head>
 <body>
@@ -83,6 +86,7 @@ select:focus{border-color:#888}
   <a href="ahp_logistiscore_en.html" class="lang-btn">English</a>
 </div>
 <p class="subtitle">Évaluation de la livrabilité urbaine · 5 sections · Échelle d'importance 1–5</p>
+<div class="urban-def"><strong>Livrabilité urbaine</strong> désigne la facilité avec laquelle les véhicules de livraison peuvent accéder à un segment de route pour effectuer des livraisons en milieu urbain.</div>
 
 <div class="progress-bar" id="progress-bar">
   <div class="progress-pip active" id="pip-main"></div><div class="progress-pip" id="pip-network"></div><div class="progress-pip" id="pip-traffic"></div><div class="progress-pip" id="pip-impediments"></div><div class="progress-pip" id="pip-accessibility"></div>
@@ -160,7 +164,7 @@ select:focus{border-color:#888}
           <td class="pair-cell">
             <span class="crit-code-sm">C1</span>
             <strong>Caractéristiques du réseau</strong>
-            <div class="pair-def">Physical attributes of the road network that influence freight vehicle movement. Includes intersection type, number of lanes, and road slope.</div>
+            <div class="pair-def">Attributs physiques du réseau routier qui influencent la circulation des véhicules de livraison. Inclut le type d'intersection, le nombre de voies et la pente.</div>
           </td>
           <td>
             <select id="main-dir-0" onchange="onDirChange('main',0)">
@@ -183,14 +187,14 @@ select:focus{border-color:#888}
           <td class="pair-cell">
             <span class="crit-code-sm">C2</span>
             <strong>Fluidité du trafic</strong>
-            <div class="pair-def">Traffic conditions affecting vehicle travel speed and reliability. Includes average speed and congestion level.</div>
+            <div class="pair-def">Conditions de trafic affectant la vitesse et la fiabilité des déplacements. Inclut la vitesse moyenne et le niveau de congestion.</div>
           </td>
         </tr><tr id="main-row-1">
           <td style="color:#aaa;font-size:0.72rem">2</td>
           <td class="pair-cell">
             <span class="crit-code-sm">C1</span>
             <strong>Caractéristiques du réseau</strong>
-            <div class="pair-def">Physical attributes of the road network that influence freight vehicle movement. Includes intersection type, number of lanes, and road slope.</div>
+            <div class="pair-def">Attributs physiques du réseau routier qui influencent la circulation des véhicules de livraison. Inclut le type d'intersection, le nombre de voies et la pente.</div>
           </td>
           <td>
             <select id="main-dir-1" onchange="onDirChange('main',1)">
@@ -213,14 +217,14 @@ select:focus{border-color:#888}
           <td class="pair-cell">
             <span class="crit-code-sm">C3</span>
             <strong>Obstacles et perturbations</strong>
-            <div class="pair-def">Physical and operational features that may hinder freight vehicle circulation or deliveries. Includes roadworks, road obstacles, and public transport stop presence.</div>
+            <div class="pair-def">Éléments physiques et opérationnels pouvant entraver la circulation ou les livraisons. Inclut les chantiers, les obstacles et les arrêts de transport public.</div>
           </td>
         </tr><tr id="main-row-2">
           <td style="color:#aaa;font-size:0.72rem">3</td>
           <td class="pair-cell">
             <span class="crit-code-sm">C1</span>
             <strong>Caractéristiques du réseau</strong>
-            <div class="pair-def">Physical attributes of the road network that influence freight vehicle movement. Includes intersection type, number of lanes, and road slope.</div>
+            <div class="pair-def">Attributs physiques du réseau routier qui influencent la circulation des véhicules de livraison. Inclut le type d'intersection, le nombre de voies et la pente.</div>
           </td>
           <td>
             <select id="main-dir-2" onchange="onDirChange('main',2)">
@@ -243,14 +247,14 @@ select:focus{border-color:#888}
           <td class="pair-cell">
             <span class="crit-code-sm">C4</span>
             <strong>Accessibilité</strong>
-            <div class="pair-def">Conditions determining whether and how easily delivery vehicles can access and serve an area. Includes vehicle size restrictions, delivery parking availability, and time access restrictions.</div>
+            <div class="pair-def">Conditions déterminant si et dans quelle mesure les véhicules de livraison peuvent accéder à une zone. Inclut les restrictions de gabarit, les places de livraison et les restrictions horaires.</div>
           </td>
         </tr><tr id="main-row-3">
           <td style="color:#aaa;font-size:0.72rem">4</td>
           <td class="pair-cell">
             <span class="crit-code-sm">C2</span>
             <strong>Fluidité du trafic</strong>
-            <div class="pair-def">Traffic conditions affecting vehicle travel speed and reliability. Includes average speed and congestion level.</div>
+            <div class="pair-def">Conditions de trafic affectant la vitesse et la fiabilité des déplacements. Inclut la vitesse moyenne et le niveau de congestion.</div>
           </td>
           <td>
             <select id="main-dir-3" onchange="onDirChange('main',3)">
@@ -273,14 +277,14 @@ select:focus{border-color:#888}
           <td class="pair-cell">
             <span class="crit-code-sm">C3</span>
             <strong>Obstacles et perturbations</strong>
-            <div class="pair-def">Physical and operational features that may hinder freight vehicle circulation or deliveries. Includes roadworks, road obstacles, and public transport stop presence.</div>
+            <div class="pair-def">Éléments physiques et opérationnels pouvant entraver la circulation ou les livraisons. Inclut les chantiers, les obstacles et les arrêts de transport public.</div>
           </td>
         </tr><tr id="main-row-4">
           <td style="color:#aaa;font-size:0.72rem">5</td>
           <td class="pair-cell">
             <span class="crit-code-sm">C2</span>
             <strong>Fluidité du trafic</strong>
-            <div class="pair-def">Traffic conditions affecting vehicle travel speed and reliability. Includes average speed and congestion level.</div>
+            <div class="pair-def">Conditions de trafic affectant la vitesse et la fiabilité des déplacements. Inclut la vitesse moyenne et le niveau de congestion.</div>
           </td>
           <td>
             <select id="main-dir-4" onchange="onDirChange('main',4)">
@@ -303,14 +307,14 @@ select:focus{border-color:#888}
           <td class="pair-cell">
             <span class="crit-code-sm">C4</span>
             <strong>Accessibilité</strong>
-            <div class="pair-def">Conditions determining whether and how easily delivery vehicles can access and serve an area. Includes vehicle size restrictions, delivery parking availability, and time access restrictions.</div>
+            <div class="pair-def">Conditions déterminant si et dans quelle mesure les véhicules de livraison peuvent accéder à une zone. Inclut les restrictions de gabarit, les places de livraison et les restrictions horaires.</div>
           </td>
         </tr><tr id="main-row-5">
           <td style="color:#aaa;font-size:0.72rem">6</td>
           <td class="pair-cell">
             <span class="crit-code-sm">C3</span>
             <strong>Obstacles et perturbations</strong>
-            <div class="pair-def">Physical and operational features that may hinder freight vehicle circulation or deliveries. Includes roadworks, road obstacles, and public transport stop presence.</div>
+            <div class="pair-def">Éléments physiques et opérationnels pouvant entraver la circulation ou les livraisons. Inclut les chantiers, les obstacles et les arrêts de transport public.</div>
           </td>
           <td>
             <select id="main-dir-5" onchange="onDirChange('main',5)">
@@ -333,7 +337,7 @@ select:focus{border-color:#888}
           <td class="pair-cell">
             <span class="crit-code-sm">C4</span>
             <strong>Accessibilité</strong>
-            <div class="pair-def">Conditions determining whether and how easily delivery vehicles can access and serve an area. Includes vehicle size restrictions, delivery parking availability, and time access restrictions.</div>
+            <div class="pair-def">Conditions déterminant si et dans quelle mesure les véhicules de livraison peuvent accéder à une zone. Inclut les restrictions de gabarit, les places de livraison et les restrictions horaires.</div>
           </td>
         </tr></tbody>
       </table>
@@ -390,7 +394,7 @@ select:focus{border-color:#888}
           <td class="pair-cell">
             <span class="crit-code-sm">C1</span>
             <strong>Type d'intersection</strong>
-            <div class="pair-def">Type of traffic control at the segment's intersection: priority road, traffic lights, roundabout, yield, or stop sign. Affects dwell time and flow.</div>
+            <div class="pair-def">Type de contrôle du trafic à l'intersection : route prioritaire, feux, rond-point, cédez-le-passage ou stop. Influence le temps d'arrêt et le flux.</div>
           </td>
           <td>
             <select id="network-dir-0" onchange="onDirChange('network',0)">
@@ -413,14 +417,14 @@ select:focus{border-color:#888}
           <td class="pair-cell">
             <span class="crit-code-sm">C2</span>
             <strong>Nombre de voies</strong>
-            <div class="pair-def">Total number of traffic lanes available. More lanes generally improve circulation for trucks and vans; fewer lanes favour cargo bikes.</div>
+            <div class="pair-def">Nombre total de voies disponibles. Plus de voies améliorent la circulation pour les camions et fourgons ; moins de voies favorisent les vélos-cargo.</div>
           </td>
         </tr><tr id="network-row-1">
           <td style="color:#aaa;font-size:0.72rem">2</td>
           <td class="pair-cell">
             <span class="crit-code-sm">C1</span>
             <strong>Type d'intersection</strong>
-            <div class="pair-def">Type of traffic control at the segment's intersection: priority road, traffic lights, roundabout, yield, or stop sign. Affects dwell time and flow.</div>
+            <div class="pair-def">Type de contrôle du trafic à l'intersection : route prioritaire, feux, rond-point, cédez-le-passage ou stop. Influence le temps d'arrêt et le flux.</div>
           </td>
           <td>
             <select id="network-dir-1" onchange="onDirChange('network',1)">
@@ -443,14 +447,14 @@ select:focus{border-color:#888}
           <td class="pair-cell">
             <span class="crit-code-sm">C3</span>
             <strong>Pente de la route</strong>
-            <div class="pair-def">Average gradient (%) of the road segment. Steep slopes affect vehicle performance, fuel consumption, and safety, especially for trucks and cargo bikes.</div>
+            <div class="pair-def">Déclivité moyenne (%) du segment. Les fortes pentes affectent les performances, la consommation et la sécurité, notamment pour les camions et vélos-cargo.</div>
           </td>
         </tr><tr id="network-row-2">
           <td style="color:#aaa;font-size:0.72rem">3</td>
           <td class="pair-cell">
             <span class="crit-code-sm">C2</span>
             <strong>Nombre de voies</strong>
-            <div class="pair-def">Total number of traffic lanes available. More lanes generally improve circulation for trucks and vans; fewer lanes favour cargo bikes.</div>
+            <div class="pair-def">Nombre total de voies disponibles. Plus de voies améliorent la circulation pour les camions et fourgons ; moins de voies favorisent les vélos-cargo.</div>
           </td>
           <td>
             <select id="network-dir-2" onchange="onDirChange('network',2)">
@@ -473,7 +477,7 @@ select:focus{border-color:#888}
           <td class="pair-cell">
             <span class="crit-code-sm">C3</span>
             <strong>Pente de la route</strong>
-            <div class="pair-def">Average gradient (%) of the road segment. Steep slopes affect vehicle performance, fuel consumption, and safety, especially for trucks and cargo bikes.</div>
+            <div class="pair-def">Déclivité moyenne (%) du segment. Les fortes pentes affectent les performances, la consommation et la sécurité, notamment pour les camions et vélos-cargo.</div>
           </td>
         </tr></tbody>
       </table>
@@ -524,7 +528,7 @@ select:focus{border-color:#888}
           <td class="pair-cell">
             <span class="crit-code-sm">C1</span>
             <strong>Vitesse moyenne</strong>
-            <div class="pair-def">Observed average travel speed on the segment. Reflects actual traffic conditions and travel time efficiency for delivery vehicles.</div>
+            <div class="pair-def">Vitesse moyenne observée sur le segment. Reflète les conditions réelles de trafic et l'efficacité du temps de trajet pour les véhicules de livraison.</div>
           </td>
           <td>
             <select id="traffic-dir-0" onchange="onDirChange('traffic',0)">
@@ -547,7 +551,7 @@ select:focus{border-color:#888}
           <td class="pair-cell">
             <span class="crit-code-sm">C2</span>
             <strong>Niveau de congestion</strong>
-            <div class="pair-def">Ratio of free-flow speed to observed average speed. A low ratio indicates heavy congestion affecting delivery efficiency.</div>
+            <div class="pair-def">Rapport entre la vitesse en flux libre et la vitesse moyenne observée. Un faible ratio indique une congestion importante affectant les livraisons.</div>
           </td>
         </tr></tbody>
       </table>
@@ -604,7 +608,7 @@ select:focus{border-color:#888}
           <td class="pair-cell">
             <span class="crit-code-sm">C1</span>
             <strong>Arrêt de transport public</strong>
-            <div class="pair-def">Presence and service frequency of nearby PT stops. Buses and trams stopping and re-entering traffic disrupt freight vehicle flow.</div>
+            <div class="pair-def">Présence et fréquence des arrêts TP à proximité. Les bus et trams perturbent le flux des véhicules de livraison.</div>
           </td>
           <td>
             <select id="impediments-dir-0" onchange="onDirChange('impediments',0)">
@@ -627,14 +631,14 @@ select:focus{border-color:#888}
           <td class="pair-cell">
             <span class="crit-code-sm">C2</span>
             <strong>Obstacles sur la chaussée</strong>
-            <div class="pair-def">Physical obstacles hindering delivery vehicle flow: speed bumps, railway crossings, and pedestrian crossings. More obstacles reduce deliverability.</div>
+            <div class="pair-def">Obstacles physiques entravant la circulation : dos-d'âne, passages à niveau et passages piétons. Plus d'obstacles réduisent la livrabilité.</div>
           </td>
         </tr><tr id="impediments-row-1">
           <td style="color:#aaa;font-size:0.72rem">2</td>
           <td class="pair-cell">
             <span class="crit-code-sm">C1</span>
             <strong>Arrêt de transport public</strong>
-            <div class="pair-def">Presence and service frequency of nearby PT stops. Buses and trams stopping and re-entering traffic disrupt freight vehicle flow.</div>
+            <div class="pair-def">Présence et fréquence des arrêts TP à proximité. Les bus et trams perturbent le flux des véhicules de livraison.</div>
           </td>
           <td>
             <select id="impediments-dir-1" onchange="onDirChange('impediments',1)">
@@ -657,14 +661,14 @@ select:focus{border-color:#888}
           <td class="pair-cell">
             <span class="crit-code-sm">C3</span>
             <strong>Chantiers</strong>
-            <div class="pair-def">Presence and duration of active construction or incident works on the segment. Longer works create greater disruption to freight movements.</div>
+            <div class="pair-def">Présence et durée des travaux actifs sur le segment. Des travaux prolongés créent des perturbations importantes pour les livraisons.</div>
           </td>
         </tr><tr id="impediments-row-2">
           <td style="color:#aaa;font-size:0.72rem">3</td>
           <td class="pair-cell">
             <span class="crit-code-sm">C2</span>
             <strong>Obstacles sur la chaussée</strong>
-            <div class="pair-def">Physical obstacles hindering delivery vehicle flow: speed bumps, railway crossings, and pedestrian crossings. More obstacles reduce deliverability.</div>
+            <div class="pair-def">Obstacles physiques entravant la circulation : dos-d'âne, passages à niveau et passages piétons. Plus d'obstacles réduisent la livrabilité.</div>
           </td>
           <td>
             <select id="impediments-dir-2" onchange="onDirChange('impediments',2)">
@@ -687,7 +691,7 @@ select:focus{border-color:#888}
           <td class="pair-cell">
             <span class="crit-code-sm">C3</span>
             <strong>Chantiers</strong>
-            <div class="pair-def">Presence and duration of active construction or incident works on the segment. Longer works create greater disruption to freight movements.</div>
+            <div class="pair-def">Présence et durée des travaux actifs sur le segment. Des travaux prolongés créent des perturbations importantes pour les livraisons.</div>
           </td>
         </tr></tbody>
       </table>
@@ -744,7 +748,7 @@ select:focus{border-color:#888}
           <td class="pair-cell">
             <span class="crit-code-sm">C1</span>
             <strong>Restrictions de gabarit</strong>
-            <div class="pair-def">Legal restrictions on vehicle dimensions or weight (height, gross weight, axle weight, length, width). Determines which vehicle types can legally access the segment.</div>
+            <div class="pair-def">Restrictions légales sur les dimensions ou le poids (hauteur, poids total, charge à essieu, longueur, largeur). Détermine quels véhicules peuvent légalement accéder au segment.</div>
           </td>
           <td>
             <select id="accessibility-dir-0" onchange="onDirChange('accessibility',0)">
@@ -767,14 +771,14 @@ select:focus{border-color:#888}
           <td class="pair-cell">
             <span class="crit-code-sm">C2</span>
             <strong>Stationnement / Livraison</strong>
-            <div class="pair-def">Number of dedicated delivery parking bays within 15 m of the segment. More spaces facilitate stopping and unloading without obstructing traffic.</div>
+            <div class="pair-def">Nombre d'emplacements de livraison dédiés dans un rayon de 15 m. Plus d'espaces facilitent l'arrêt et le déchargement sans obstruer la circulation.</div>
           </td>
         </tr><tr id="accessibility-row-1">
           <td style="color:#aaa;font-size:0.72rem">2</td>
           <td class="pair-cell">
             <span class="crit-code-sm">C1</span>
             <strong>Restrictions de gabarit</strong>
-            <div class="pair-def">Legal restrictions on vehicle dimensions or weight (height, gross weight, axle weight, length, width). Determines which vehicle types can legally access the segment.</div>
+            <div class="pair-def">Restrictions légales sur les dimensions ou le poids (hauteur, poids total, charge à essieu, longueur, largeur). Détermine quels véhicules peuvent légalement accéder au segment.</div>
           </td>
           <td>
             <select id="accessibility-dir-1" onchange="onDirChange('accessibility',1)">
@@ -797,14 +801,14 @@ select:focus{border-color:#888}
           <td class="pair-cell">
             <span class="crit-code-sm">C3</span>
             <strong>Restrictions horaires d'accès</strong>
-            <div class="pair-def">Hours per day during which delivery vehicles are legally permitted to access the segment. Fewer permitted hours reduce the delivery window.</div>
+            <div class="pair-def">Nombre d'heures par jour pendant lesquelles les véhicules de livraison sont autorisés à accéder au segment. Moins d'heures réduisent la fenêtre de livraison.</div>
           </td>
         </tr><tr id="accessibility-row-2">
           <td style="color:#aaa;font-size:0.72rem">3</td>
           <td class="pair-cell">
             <span class="crit-code-sm">C2</span>
             <strong>Stationnement / Livraison</strong>
-            <div class="pair-def">Number of dedicated delivery parking bays within 15 m of the segment. More spaces facilitate stopping and unloading without obstructing traffic.</div>
+            <div class="pair-def">Nombre d'emplacements de livraison dédiés dans un rayon de 15 m. Plus d'espaces facilitent l'arrêt et le déchargement sans obstruer la circulation.</div>
           </td>
           <td>
             <select id="accessibility-dir-2" onchange="onDirChange('accessibility',2)">
@@ -827,7 +831,7 @@ select:focus{border-color:#888}
           <td class="pair-cell">
             <span class="crit-code-sm">C3</span>
             <strong>Restrictions horaires d'accès</strong>
-            <div class="pair-def">Hours per day during which delivery vehicles are legally permitted to access the segment. Fewer permitted hours reduce the delivery window.</div>
+            <div class="pair-def">Nombre d'heures par jour pendant lesquelles les véhicules de livraison sont autorisés à accéder au segment. Moins d'heures réduisent la fenêtre de livraison.</div>
           </td>
         </tr></tbody>
       </table>
