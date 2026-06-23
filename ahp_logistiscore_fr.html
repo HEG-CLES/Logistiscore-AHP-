@@ -107,7 +107,7 @@ select:focus{border-color:#888}
   </div>
 </div>
 
-<div class="ahp-expl">La méthode AHP détermine l'importance relative de chaque critère en vous demandant de les comparer deux à deux. Pour chaque paire, vous indiquez simplement quel critère vous semble le plus important pour la livrabilité urbaine, et dans quelle mesure, en utilisant l'échelle d'importance de 1 à 5. Les poids finaux sont ensuite calculés automatiquement à partir de vos réponses.</div>
+<div class="ahp-expl"><p style="margin-bottom:0.6rem">Le but de cet exercice est de pondérer les critères utilisés pour calculer l'indice de livrabilité. Le poids de chaque critère détermine dans quelle mesure il contribue au score final d'un segment de route. Certains critères sont statiques et reflètent des caractéristiques physiques fixes du réseau routier telles que le type d'intersection, le nombre de voies ou la pente de la route. D'autres sont dynamiques et capturent des conditions qui varient dans le temps, comme la congestion ou les chantiers.</p><p>La méthode AHP établit ces poids en vous demandant de comparer les critères deux à deux, ce qui produit des résultats plus cohérents qu'un classement direct. Pour chaque paire, indiquez quel critère influence davantage la livrabilité du transport de marchandises en milieu urbain, et dans quelle mesure, en utilisant l'échelle d'importance de 1 à 5.</p></div>
 <div class="card">
   <p class="section-title"><span class="step-num">2</span>Référence de l'échelle d'importance</p>
   <div class="saaty-ref"><div class="saaty-item"><strong>1</strong>Importance égale</div><div class="saaty-item"><strong>2</strong>Importance modérée</div><div class="saaty-item"><strong>3</strong>Importance forte</div><div class="saaty-item"><strong>4</strong>Importance très forte</div><div class="saaty-item"><strong>5</strong>Importance extrême</div></div>
@@ -864,8 +864,22 @@ document.getElementById('expert-date').value = new Date().toISOString().slice(0,
 function onDirChange(key, idx) {
   const dir = document.getElementById(key+'-dir-'+idx).value;
   const s = document.getElementById(key+'-scale-'+idx);
-  if(dir===''||dir==='eq') { s.disabled=true; s.value=''; }
-  else { s.disabled=false; if(!s.value) s.value='1'; }
+  if(dir===''||dir==='eq') {
+    s.disabled=true; s.value='';
+    // Restore option 1 if it was removed
+    if(!s.querySelector('option[value="1"]')) {
+      const opt = document.createElement('option');
+      opt.value='1'; opt.textContent='1';
+      s.insertBefore(opt, s.querySelector('option[value="2"]'));
+    }
+  } else {
+    // Remove option 1 — scale 1 means equal, contradicts A≠B direction
+    const opt1 = s.querySelector('option[value="1"]');
+    if(opt1) opt1.remove();
+    s.disabled=false;
+    // Default to 2 if unset or was 1
+    if(!s.value || s.value==='1') s.value='2';
+  }
   computeSection(key);
 }
 
@@ -980,6 +994,17 @@ function goNext(currentKey, nextKey) {
     alert('Veuillez compléter toutes les comparaisons de cette section avant de continuer.');
     return;
   }
+  // Bloquer si une direction A/B a une échelle de 1
+  let hasInvalidScale = false;
+  sec.pairs.forEach(([i,j], idx) => {
+    const dir = document.getElementById(currentKey+'-dir-'+idx).value;
+    const sc = document.getElementById(currentKey+'-scale-'+idx).value;
+    if((dir==='a'||dir==='b') && (!sc || sc==='1')) hasInvalidScale=true;
+  });
+  if(hasInvalidScale) {
+    alert("Veuillez sélectionner une valeur d'échelle supérieure à 1 pour toutes les comparaisons où A ou B est plus important.");
+    return;
+  }
   if(n>2) {
     const w = eigenvector(m, n);
     const {cr} = computeCR(m, w, n);
@@ -1052,6 +1077,14 @@ function submitToSheets() {
     const n = sec.n;
     const {m, allFilled} = getMatrix(sec.key);
     if(!allFilled) { alert('Veuillez compléter toutes les sections avant de soumettre.'); return; }
+    // Bloquer si une direction A/B a une échelle de 1
+    let invalidScale = false;
+    sec.pairs.forEach(([i,j], idx) => {
+      const dir = document.getElementById(sec.key+'-dir-'+idx).value;
+      const sc = document.getElementById(sec.key+'-scale-'+idx).value;
+      if((dir==='a'||dir==='b') && (!sc || sc==='1')) invalidScale=true;
+    });
+    if(invalidScale) { alert("Veuillez sélectionner une valeur d'échelle supérieure à 1 pour toutes les comparaisons où A ou B est plus important."); return; }
     if(n>2) {
       const w = eigenvector(m,n);
       const {cr} = computeCR(m,w,n);
