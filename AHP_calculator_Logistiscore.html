@@ -90,7 +90,7 @@
     <h2>Experts</h2>
     <div class="panel">
       <div id="expertTable"></div>
-      <p class="foot">Unchecking an expert removes them from consolidation, consensus and all indicators. Weights are used in the weighted geometric mean of judgments (default 1). Individual CR per group uses the Alonso–Lamata formula on the raw (linear-scale) judgments, identical to the Excel input sheets.</p>
+      <p class="foot">Unchecking an expert removes them from consolidation, consensus and all indicators. Weights are used in the weighted geometric mean of judgments (default 1). Individual CR per group is RGMM-based (λ estimated from the row-geometric-mean weights, Alonso–Lamata formula), identical to the Excel input sheets and to the CR stored by the survey. The group cards show the eigenvalue-based CR (λmax of the principal eigenvector), identical to the Excel Summary sheet; for inconsistent matrices the two differ, the EVM value usually being slightly higher.</p>
     </div>
 
     <h2>Global weights</h2>
@@ -670,7 +670,11 @@ function renderGlobal() {
 function indicatorChips(r) {
   const chips = [];
   const crOK = r.n <= 2 || r.cr <= 0.1;
-  chips.push(`<span class="chip ${crOK ? 'ok' : 'bad'}">CR ${num(r.cr, 4)}</span>`);
+  chips.push(`<span class="chip ${crOK ? 'ok' : 'bad'}">CR (EVM) ${num(r.cr, 4)}</span>`);
+  if (r.pSel > 0 && r.participants[r.pSel - 1]) {
+    const pc = r.participants[r.pSel - 1].cr;
+    chips.push(`<span class="chip ${r.n <= 2 || pc <= 0.1 ? 'ok' : 'bad'}">CR (RGMM) ${num(pc, 4)}</span>`);
+  }
   chips.push(`<span class="chip">λ ${num(r.lambda, 4)}</span>`);
   chips.push(`<span class="chip">GCI ${num(r.gci, 4)}</span>`);
   chips.push(`<span class="chip">Ψ ${num(r.psi, 4)}</span>`);
